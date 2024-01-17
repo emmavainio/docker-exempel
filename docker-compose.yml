@@ -2,6 +2,7 @@ version: "3.8"
 
 services:
   web:
+    image: docker-exempel
     build:
       context: .
     ports:
