@@ -1,4 +1,12 @@
 target
-.gitignore
+.mvn
+mvnw.cmd
+mvnw
+*.log
+*.class
+.DS_Store
 .git
+.gitignore
 .idea
+*.md
+LICENSE
