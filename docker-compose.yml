@@ -3,6 +3,7 @@ version: "3.8"
 services:
   web:
     image: docker-exempel
+    restart: always
     build:
       context: .
     ports:
@@ -10,10 +11,18 @@ services:
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/docker-exempel
     depends_on:
-      - db
+      db:
+        condition: service_healthy
   db:
-    image: postgres:12-alpine
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: docker-exempel
+    image: postgres:16-alpine
+    restart: always
+    env_file: db.env
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready", "-U", "postgres" ]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - db-data:/var/lib/postgresql/data
+volumes:
+    db-data:
